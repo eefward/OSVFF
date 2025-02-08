@@ -103,7 +103,9 @@ print(findFacebook(userinput))
 print(findTikToc(userinput))
 print(findInstagram(userinput))
 
+'''
 with open("exampleRoblox.txt") as file:
     contents = file.read()
     
     robloxFriendsCopyPaste(contents)
+'''
