@@ -21,12 +21,14 @@ def findBetween(txt, start, end):
     return None
 
 def findRoblox(username):
+    # Getting the request
     payload = {"usernames": [username], "excludeBannedUsers": False }
     headers = {"Content-Type": "application/json"}
     response = requests.post("https://users.roblox.com/v1/usernames/users", json=payload, headers=headers)
 
     if response.status_code != 200: return None
 
+    # Checking if the data exists
     data = response.json()["data"][0]
     if not data: return {"Roblox": False}
 
