@@ -1,0 +1,33 @@
+import requests
+
+def findRoblox(username):
+    payload = {
+        "usernames": [username], 
+        "excludeBannedUsers": False 
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post("https://users.roblox.com/v1/usernames/users", json=payload, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        
+        if data["data"]:
+            userdata = data["data"][0]  
+            userid = userdata["id"]
+            profile_url = f"https://www.roblox.com/users/{userid}/profile"
+
+
+            return {
+                "username": username,
+                "profile_url": profile_url
+            }
+        else:
+            return None
+    else:
+        return None
+
+userinput = input("enter Name ")
+print(findRoblox(userinput))
