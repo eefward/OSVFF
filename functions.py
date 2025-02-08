@@ -23,22 +23,24 @@ def findBetween(txt, start, end):
 def findRoblox(username):
     payload = {"usernames": [username], "excludeBannedUsers": False }
     headers = {"Content-Type": "application/json"}
+    payload = {
+        "usernames": [username], 
+        "excludeBannedUsers": False 
+    }
 
-    response = requests.post("https://users.roblox.com/v1/usernames/users", json=payload, headers=headers)
+    response = requests.post("https://users.roblox.com/v1/usernames/users", 
+                json=payload, headers={"Content-Type": "application/json"})
 
-    if response.status_code == 200:
-        data = response.json()
-        
-        if data["data"]:
-            userdata = data["data"][0]  
-            userid = userdata["id"]
-            actualUsername = userdata["name"]
-            displayName = userdata["displayName"]
-            url = f"https://www.roblox.com/users/{userid}/profile"
+    if response.status_code != 200: return None
 
-            return {"Roblox": True, "username": actualUsername, "displayName": displayName, "profile_url": url}
-    else:
-        return {"Roblox": False, "username": None, "displayName": None, "profile": None}
+    data = response.json()["data"][0]
+    if not data: return {"Roblox": False, username: None, "profile": None}
+
+    print(data)
+    profile_url = f"https://www.roblox.com/users/{data["id"]}/profile"
+    
+
+    return {"Roblox": True, "username": username, "profile": profile_url}
     
 def findFacebook(username):
     url = f"https://www.facebook.com/{username}"
@@ -64,5 +66,3 @@ def findTikToc(username):
 
 userinput = input("enter Name: ")
 print(findRoblox(userinput))
-print(findFacebook(userinput))
-print(findTikToc(userinput))
