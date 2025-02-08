@@ -59,6 +59,13 @@ def findTikToc(username):
         return {"TikTok": True, "username": username.lower(), "displayName": username.lower(), "profile_url": url}
     else:
         return {"TikTok": False}
+    
+#https://www.instagram.com/mrbeast/
+
+def findInstagram(username):
+    url = f"https://www.instagram.com/{username}/"
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, "html.parser").prettify()
 
 userinput = input("enter Name: ")
 print(findRoblox(userinput))
