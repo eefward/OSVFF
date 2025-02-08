@@ -22,7 +22,7 @@ def findRoblox(username):
 
             return {
                 "username": username,
-                "profile_url": profile_url
+                "profile": profile_url
             }
         else:
             return None
