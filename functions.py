@@ -16,26 +16,20 @@ def findRoblox(username):
         "usernames": [username], 
         "excludeBannedUsers": False 
     }
-    headers = {
-        "Content-Type": "application/json"
-    }
 
-    response = requests.post("https://users.roblox.com/v1/usernames/users", json=payload, headers=headers)
+    response = requests.post("https://users.roblox.com/v1/usernames/users", 
+                json=payload, headers={"Content-Type": "application/json"})
 
-    if response.status_code == 200:
-        data = response.json()
-        
-        if data["data"]:
-            userdata = data["data"][0]  
-            userid = userdata["id"]
-            profile_url = f"https://www.roblox.com/users/{userid}/profile"
+    if response.status_code != 200: return None
 
+    data = response.json()["data"][0]
+    if not data: return {"Roblox": False, username: None, "profile": None}
 
-            return {"Roblox": True, "username": username, "profile": profile_url}
-        else:
-            return {"Roblox": False, "username": None, "profile": None}
-    else:
-        return None
+    print(data)
+    profile_url = f"https://www.roblox.com/users/{data["id"]}/profile"
+    
+
+    return {"Roblox": True, "username": username, "profile": profile_url}
     
 def findFacebook(username):
     url = f"https://www.facebook.com/{username}"
@@ -54,4 +48,4 @@ def findInstagram(username):
     return soup
 
 userinput = input("enter Name: ")
-print(findInstagram(userinput))
+print(findRoblox(userinput))
