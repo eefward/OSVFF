@@ -23,24 +23,19 @@ def findBetween(txt, start, end):
 def findRoblox(username):
     payload = {"usernames": [username], "excludeBannedUsers": False }
     headers = {"Content-Type": "application/json"}
-    payload = {
-        "usernames": [username], 
-        "excludeBannedUsers": False 
-    }
-
-    response = requests.post("https://users.roblox.com/v1/usernames/users", 
-                json=payload, headers={"Content-Type": "application/json"})
+    response = requests.post("https://users.roblox.com/v1/usernames/users", json=payload, headers=headers)
 
     if response.status_code != 200: return None
 
     data = response.json()["data"][0]
     if not data: return {"Roblox": False}
 
-    profile_url = f"https://www.roblox.com/users/{data["id"]}/profile"
-    displayName = data["displayName"]
-    name = data["name"]
-
-    return {"Roblox": True, "username": name, "displayName": displayName, "profile_url": profile_url}
+    return {
+        "Roblox": True, 
+        "username": data["name"], 
+        "displayName": data["displayName"],
+        "profile": f"https://www.roblox.com/users/{data["id"]}/profile"
+    }
     
 def findFacebook(username):
     url = f"https://www.facebook.com/{username}"
