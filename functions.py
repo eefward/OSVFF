@@ -34,7 +34,7 @@ def findRoblox(username):
         "Roblox": True, 
         "username": data["name"], 
         "displayName": data["displayName"],
-        "profile": f"https://www.roblox.com/users/{data["id"]}/profile"
+        "profile_url": f"https://www.roblox.com/users/{data["id"]}/profile"
     }
     
 def findFacebook(username):
