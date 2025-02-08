@@ -21,6 +21,16 @@ def findBetween(txt, start, end):
     
     return None
 
+def findEverything(username):
+    return [
+        username, 
+        findRoblox(username),
+        findFacebook(username),
+        findInstagram(username),
+        findTikToc(username)
+    ]
+    
+
 def findRoblox(username):
     payload = {"usernames": [username], "excludeBannedUsers": False }
     headers = {"Content-Type": "application/json"}
@@ -41,6 +51,18 @@ def findRoblox(username):
         "displayName": data["displayName"],
         "profile_url": f"https://www.roblox.com/users/{data["id"]}/profile"
     }
+
+def robloxFriendsCopyPaste(input):
+    data = []
+
+    matches = re.findall(r"@[a-zA-Z0-9]{3,20}\n", input)
+    for match in matches:
+        username = match[1:-2] # Removes @ from the start and \n from the end
+        data.append(findEverything(username))
+    
+    for specific_user in data:
+        print(specific_user)
+
     
 def findFacebook(username):
     url = f"https://www.facebook.com/{username}"
@@ -80,3 +102,8 @@ print(findRoblox(userinput))
 print(findFacebook(userinput))
 print(findTikToc(userinput))
 print(findInstagram(userinput))
+
+with open("exampleRoblox.txt") as file:
+    contents = file.read()
+    
+    robloxFriendsCopyPaste(contents)
