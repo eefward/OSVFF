@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import re
 
 #just for testing, makes strings into json files because terminal is too small
 def jsonDump(soup):
@@ -13,7 +14,7 @@ def jsonDump(soup):
 #div: <hello world>; start: "div: <", end: ">;" returns "hello world"
 def findBetween(txt, start, end):
     start = txt.find(start) + len(start)
-    end = txt.find(end)
+    end = txt.find(end, start)
 
     if start != -1 and end != -1:
         return txt[start:end]
@@ -21,15 +22,17 @@ def findBetween(txt, start, end):
     return None
 
 def findRoblox(username):
-    # Getting the request
     payload = {"usernames": [username], "excludeBannedUsers": False }
     headers = {"Content-Type": "application/json"}
     response = requests.post("https://users.roblox.com/v1/usernames/users", json=payload, headers=headers)
 
     if response.status_code != 200: return None
-
-    # Checking if the data exists
-    data = response.json()["data"][0]
+    
+    try:
+        data = response.json()["data"][0]
+    except:
+        return {"Roblox": False}
+    
     if not data: return {"Roblox": False}
 
     return {
@@ -59,16 +62,21 @@ def findTikToc(username):
         displayName = findBetween(soup, '"nickname":"', '","avatarLarger"')
         return {"TikTok": True, "username": username.lower(), "displayName": displayName, "profile_url": url}
     else:
-        return {"TikTok": False, "username": None, "displayName": None, "profile_url": None}
-    
-#https://www.instagram.com/mrbeast/
+        return {"TikTok": False}
 
 def findInstagram(username):
     url = f"https://www.instagram.com/{username}/"
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser").prettify()
+    actualUser = findBetween(soup, '(@', '\u2022 Instagram photos and videos\" proper')
+
+    if actualUser:
+        return {"Instagram": True, "username": username.lower(), "displayName": None, "profile_url": url} 
+    else:
+        return {"Instagram": False}
 
 userinput = input("enter Name: ")
 print(findRoblox(userinput))
 print(findFacebook(userinput))
 print(findTikToc(userinput))
+print(findInstagram(userinput))
