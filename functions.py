@@ -4,9 +4,7 @@ import json
 
 #just for testing, makes strings into json files because terminal is too small
 def jsonDump(soup):
-    data = {
-        "html": soup,
-    }
+    data = {"html": soup}
 
     with open("testdata.json", "w") as file:
         json.dump(data, file, indent=4)
@@ -23,6 +21,8 @@ def findBetween(txt, start, end):
     return None
 
 def findRoblox(username):
+    payload = {"usernames": [username], "excludeBannedUsers": False }
+    headers = {"Content-Type": "application/json"}
     payload = {
         "usernames": [username], 
         "excludeBannedUsers": False 
