@@ -37,7 +37,7 @@ def findRoblox(username):
         data = response.json()
         
         if data["data"]:
-            userdata = data["data"][0]  
+            userdata = data["data"][0]
             userid = userdata["id"]
             actualUsername = userdata["name"]
             displayName = userdata["displayName"]
@@ -58,7 +58,6 @@ def findFacebook(username):
     else:
         return {"Facebook": False, "username": None, "displayName": None, "profile_url": None}
 
-#did not finish displayname
 def findTikToc(username):
     url = f"https://www.tiktok.com/@{username}"
     page = requests.get(url)
