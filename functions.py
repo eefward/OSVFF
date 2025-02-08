@@ -30,14 +30,11 @@ def findRoblox(username):
     data = response.json()["data"][0]
     if not data: return {"Roblox": False}
 
-    profile_url = f"https://www.roblox.com/users/{data["id"]}/profile"
-    
-
     return {
         "Roblox": True, 
         "username": data["name"], 
         "displayName": data["displayName"],
-        "profile": profile_url
+        "profile": f"https://www.roblox.com/users/{data["id"]}/profile"
     }
     
 def findFacebook(username):
