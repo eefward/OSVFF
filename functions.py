@@ -30,7 +30,7 @@ def findRoblox(username):
         data = response.json()
         
         if data["data"]:
-            userdata = data["data"][0]
+            userdata = data["data"][0]  
             userid = userdata["id"]
             actualUsername = userdata["name"]
             displayName = userdata["displayName"]
@@ -51,22 +51,18 @@ def findFacebook(username):
     else:
         return {"Facebook": False, "username": None, "displayName": None, "profile_url": None}
 
+#did not finish displayname
 def findTikToc(username):
     url = f"https://www.tiktok.com/@{username}"
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser').prettify()
 
     if soup.find(f'"uniqueId":"{username.lower()}"') != -1:
-        displayName = findBetween(soup, '"nickname":"', '","avatarLarger"')
-        return {"TikTok": True, "username": username.lower(), "displayName": displayName, "profile_url": url}
+        return {"TikTok": True, "username": username.lower(), "displayName": username.lower(), "profile_url": url}
     else:
         return {"TikTok": False, "username": None, "displayName": None, "profile_url": None}
-
-def findInstagram(username):
-    pass
 
 userinput = input("enter Name: ")
 print(findRoblox(userinput))
 print(findFacebook(userinput))
 print(findTikToc(userinput))
-print(findInstagram(userinput))
