@@ -56,9 +56,10 @@ def findTikToc(username):
     soup = BeautifulSoup(page.content, 'html.parser').prettify()
 
     if soup.find(f'"uniqueId":"{username.lower()}"') != -1:
-        return {"TikTok": True, "username": username.lower(), "displayName": username.lower(), "profile_url": url}
+        displayName = findBetween(soup, '"nickname":"', '","avatarLarger"')
+        return {"TikTok": True, "username": username.lower(), "displayName": displayName, "profile_url": url}
     else:
-        return {"TikTok": False}
+        return {"TikTok": False, "username": None, "displayName": None, "profile_url": None}
     
 #https://www.instagram.com/mrbeast/
 
