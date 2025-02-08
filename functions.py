@@ -2,14 +2,25 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-"""
-   data = {
+#just for testing, makes strings into json files because terminal is too small
+def jsonDump(soup):
+    data = {
         "html": soup,
     }
 
-    with open("dataName.json", "w") as file:
+    with open("testdata.json", "w") as file:
         json.dump(data, file, indent=4)
-"""
+
+#for html finding between lines, example
+#div: <hello world>; start: "div: <", end: ">;" returns "hello world"
+def findBetween(txt, start, end):
+    start = txt.find(start) + len(start)
+    end = txt.find(end)
+
+    if start != -1 and end != -1:
+        return txt[start:end]
+    
+    return None
 
 def findRoblox(username):
     payload = {
@@ -35,17 +46,23 @@ def findFacebook(username):
     url = f"https://www.facebook.com/{username}"
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser').prettify()
+    actualUser = findBetween(soup, '{\"title\":\"', '\",\"accessory\":null,\"favicon\":null}')
 
-    if soup.find("Join Facebook to connect with") != -1:
-        return {"Facebook": True, "username": username, "profile_url": url}
+    if actualUser:
+        return {"Facebook": True, "username": username, "displayName": actualUser, "profile_url": url}
     else:
-        return {"Facebook": False, "username": None, "profile_url": None}
+        return {"Facebook": False, "username": None, "displayName": None, "profile_url": None}
 
-def findInstagram(username):
-    url = f"https://www.instagram.com/{username}/"
+#did not finish displayname
+def findTikToc(username):
+    url = f"https://www.tiktok.com/@{username}"
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser').prettify()
-    return soup
+
+    if soup.find(f'"uniqueId":"{username.lower()}"') != -1:
+        return {"TikTok": True, "username": username.lower(), "displayName": username.lower(), "profile_url": url}
+    else:
+        return {"TikTok": False, "username": None, "displayName": None, "profile_url": None}
 
 userinput = input("enter Name: ")
 print(findRoblox(userinput))
