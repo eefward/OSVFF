@@ -23,22 +23,24 @@ def findBetween(txt, start, end):
 def findRoblox(username):
     payload = {"usernames": [username], "excludeBannedUsers": False }
     headers = {"Content-Type": "application/json"}
+    payload = {
+        "usernames": [username], 
+        "excludeBannedUsers": False 
+    }
 
-    response = requests.post("https://users.roblox.com/v1/usernames/users", json=payload, headers=headers)
+    response = requests.post("https://users.roblox.com/v1/usernames/users", 
+                json=payload, headers={"Content-Type": "application/json"})
 
-    if response.status_code == 200:
-        data = response.json()
-        
-        if data["data"]:
-            userdata = data["data"][0]  
-            userid = userdata["id"]
-            actualUsername = userdata["name"]
-            displayName = userdata["displayName"]
-            url = f"https://www.roblox.com/users/{userid}/profile"
+    if response.status_code != 200: return None
 
-            return {"Roblox": True, "username": actualUsername, "displayName": displayName, "profile_url": url}
-    else:
-        return {"Roblox": False, "username": None, "displayName": None, "profile": None}
+    data = response.json()["data"][0]
+    if not data: return {"Roblox": False}
+
+    profile_url = f"https://www.roblox.com/users/{data["id"]}/profile"
+    displayName = data["displayName"]
+    name = data["name"]
+
+    return {"Roblox": True, "username": name, "displayName": displayName, "profile_url": profile_url}
     
 def findFacebook(username):
     url = f"https://www.facebook.com/{username}"
@@ -49,9 +51,8 @@ def findFacebook(username):
     if actualUser:
         return {"Facebook": True, "username": username, "displayName": actualUser, "profile_url": url}
     else:
-        return {"Facebook": False, "username": None, "displayName": None, "profile_url": None}
+        return {"Facebook": False}
 
-#did not finish displayname
 def findTikToc(username):
     url = f"https://www.tiktok.com/@{username}"
     page = requests.get(url)
@@ -60,7 +61,7 @@ def findTikToc(username):
     if soup.find(f'"uniqueId":"{username.lower()}"') != -1:
         return {"TikTok": True, "username": username.lower(), "displayName": username.lower(), "profile_url": url}
     else:
-        return {"TikTok": False, "username": None, "displayName": None, "profile_url": None}
+        return {"TikTok": False}
 
 userinput = input("enter Name: ")
 print(findRoblox(userinput))
