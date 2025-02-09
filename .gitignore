@@ -1,2 +1,4 @@
-exampleRoblox.txt
+__pycache__
+flask_session
+testdata.json
 .env

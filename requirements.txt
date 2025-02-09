@@ -2,3 +2,4 @@ requests
 Flask
 Flask-Session
 beautifulsoup4
+regex
