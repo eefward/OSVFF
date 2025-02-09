@@ -28,7 +28,7 @@ def findEverything(username):
         findFacebook(username),
         findTikToc(username),
         findGithub(username),
-        findTwitter(username),
+        findTwitter_fromGithub(username),
         findYoutube(username)
     ]
     
