@@ -10,17 +10,18 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/")
 def home():
-    if request.method == 'GET':
-        return render_template("index.html")
+    return render_template("index.html")
     
+    
+@app.route("/data", methods=['POST'])
+def data():
     # Prevent malicious input
     username = html.escape(request.form.get("username"))
     data = findEverything(username)
 
     return jsonify({"data": data})
-    
 
 
 if __name__ == '__main__':
