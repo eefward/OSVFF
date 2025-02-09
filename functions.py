@@ -26,9 +26,10 @@ def findEverything(username):
         username, 
         findRoblox(username),
         findFacebook(username),
-        findInstagram(username),
         findTikToc(username),
-        findGithub(username)
+        findGithub(username),
+        findTwitter(username),
+        findYoutube(username)
     ]
     
 
@@ -87,6 +88,7 @@ def findTikToc(username):
     else:
         return {"TikTok": False}
 
+'''
 def findInstagram(username):
     url = f"https://www.instagram.com/{username}/"
     page = requests.get(url)
@@ -97,18 +99,8 @@ def findInstagram(username):
         return {"Instagram": True, "displayName": None, "profile_url": url} 
     else:
         return {"Instagram": False}
-    
-def findTwitter(username):
-    url = f"https://x.com/{username}"
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, "html.parser").prettify()
-
-    if len(soup) == 2656:
-        return {"Twitter (X)": False}
-    
-    return {"Twitter (X)": True, "username": username.lower(), "displayName": None, "profile_url": url}
-
-#github has some information...
+'''
+        
 def findGithub(username):
     url = f"https://api.github.com/users/{username}"
     
@@ -120,16 +112,44 @@ def findGithub(username):
     else:
         return {"Github": False}
 
+#through github done sue me please
+def findTwitter(username):
+    url = f"https://api.github.com/users/{username}"
     
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        user_data = response.json()
+        tusername = user_data["twitter_username"]
+
+        return {"Twitter": True, "username": tusername, "displayName": None, "profile_url": f'https://x.com/{tusername}'}
+    else:
+        return {"Twitter": False}
+
+
+def findYoutube(username):
+    url = f"https://www.youtube.com/@{username}"
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser').prettify()
+
+    if soup.find("404 Not Found") == -1:
+        displayName = findBetween(soup, 'rel=\"alternate\"/>\n  <title>\n   ', ' - YouTube\n  </title>\n  <meta content=\"')
+        return {"Youtube": True, "displayName": displayName, "profile_url": url}
+    else:
+        return {"Youtube": False}
+
+'''
+ex usage:
 
 userinput = input("enter Name: ")
 print(findRoblox(userinput))
 print(findFacebook(userinput))
 print(findTikToc(userinput))
-print(findInstagram(userinput))
+print(findTwitter(userinput))
 print(findGithub(userinput))
+print(findYoutube(userinput))
 
-'''
+
 with open("exampleRoblox.txt") as file:
     contents = file.read()
     
