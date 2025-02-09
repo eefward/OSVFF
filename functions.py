@@ -113,7 +113,7 @@ def findGithub(username):
         return {"Github": False}
 
 #through public github information dont sue me please
-def findTwitter(username):
+def findTwitter_fromGithub(username):
     url = f"https://api.github.com/users/{username}"
     
     response = requests.get(url)
@@ -145,7 +145,7 @@ userinput = input("enter Name: ")
 print(findRoblox(userinput))
 print(findFacebook(userinput))
 print(findTikToc(userinput))
-print(findTwitter(userinput))
+print(findTwitter_fromGithub(userinput))
 print(findGithub(userinput))
 print(findYoutube(userinput))
 
