@@ -4,14 +4,35 @@
     padding:300px 0;
     height: 200px;
     color: azure;
-
+    -webkit-text-stroke: 2px rgb(0, 41, 118);
 }
 
 body{
-    object-fit: contain;
-    
     background-image: url('https://static8.depositphotos.com/1029019/1052/i/450/depositphotos_10525934-stock-photo-magnifying-lens-on-the-laptop.jpg');
-
+    position: relative;
 }
+
+#label {
+    text-align: center;
+    color: aliceblue;
+    font-size: 50px;
+}
+
+#Instagram{
+    text-align: center;
+    color: black;
+    font-size: 25px;
+}
+
+#submit{
+    text-align: center;
+    color: black;
+    font-size: 25px;
+    position: relative;
+}
+
+
+
+
 
 
