@@ -112,7 +112,7 @@ def findGithub(username):
     else:
         return {"Github": False}
 
-#through github done sue me please
+#through public github information dont sue me please
 def findTwitter(username):
     url = f"https://api.github.com/users/{username}"
     
