@@ -108,7 +108,7 @@ def findGithub(username):
     
     if response.status_code == 200:
         user_data = response.json()
-        return {"Github": True, "displayName": user_data["name"], "profile_url": url}
+        return {"Github": True, "displayName": user_data["name"], "profile_url": f'https://github.com/{username}'}
     else:
         return {"Github": False}
 
@@ -117,11 +117,14 @@ def findTwitter(username):
     url = f"https://api.github.com/users/{username}"
     
     response = requests.get(url)
+    user_data = response.json()
+    try:
+        twitterUser = user_data["twitter_username"]
+    except:
+        return {"Twitter": False}
     
-    if response.status_code == 200:
-        user_data = response.json()
-
-        return {"Twitter": True, "displayName": None, "profile_url": f'https://x.com/{user_data["twitter_username"]}'}
+    if twitterUser:
+        return {"Twitter": True, "displayName": None, "profile_url": f'https://x.com/{twitterUser}'}
     else:
         return {"Twitter": False}
 
@@ -137,9 +140,7 @@ def findYoutube(username):
     else:
         return {"Youtube": False}
 
-'''
-ex usage:
-
+"""
 userinput = input("enter Name: ")
 print(findRoblox(userinput))
 print(findFacebook(userinput))
@@ -148,9 +149,9 @@ print(findTwitter(userinput))
 print(findGithub(userinput))
 print(findYoutube(userinput))
 
-
 with open("exampleRoblox.txt") as file:
     contents = file.read()
     
     robloxFriendsCopyPaste(contents)
-'''
+
+"""
