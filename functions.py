@@ -108,7 +108,7 @@ def findGithub(username):
     
     if response.status_code == 200:
         user_data = response.json()
-        return {"Github": True, "username": user_data["login"], "displayName": user_data["name"], "profile_url": url}
+        return {"Github": True, "displayName": user_data["name"], "profile_url": url}
     else:
         return {"Github": False}
 
@@ -120,9 +120,8 @@ def findTwitter(username):
     
     if response.status_code == 200:
         user_data = response.json()
-        tusername = user_data["twitter_username"]
 
-        return {"Twitter": True, "username": tusername, "displayName": None, "profile_url": f'https://x.com/{tusername}'}
+        return {"Twitter": True, "displayName": None, "profile_url": f'https://x.com/{user_data["twitter_username"]}'}
     else:
         return {"Twitter": False}
 
