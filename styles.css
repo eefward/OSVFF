@@ -10,6 +10,8 @@
 body{
     background-image: url('https://static8.depositphotos.com/1029019/1052/i/450/depositphotos_10525934-stock-photo-magnifying-lens-on-the-laptop.jpg');
     background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
     position: relative;
 }
 
@@ -32,6 +34,11 @@ body{
     color: black;
     font-size: 25px;
     position: relative;
+}
+
+#Apps{
+    font-size: 25px;
+    text-align: center;
 }
 
 
