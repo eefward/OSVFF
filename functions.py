@@ -4,10 +4,10 @@ import json
 import re
 
 #just for testing, makes strings into json files because terminal is too small
-def jsonDump(soup):
+def jsonDump(soup, fileName = "testdata"):
     data = {"html": soup}
 
-    with open("testdata.json", "w") as file:
+    with open(f"{fileName}.json", "w") as file:
         json.dump(data, file, indent=4)
 
 #for html finding between lines, example
@@ -27,7 +27,8 @@ def findEverything(username):
         findRoblox(username),
         findFacebook(username),
         findInstagram(username),
-        findTikToc(username)
+        findTikToc(username),
+        findGithub(username)
     ]
     
 
@@ -48,7 +49,7 @@ def findRoblox(username):
     return {
         "Roblox": True, 
         "displayName": data["displayName"],
-        "profile_url": f"https://www.roblox.com/users/{data["id"]}/profile"
+        "profile_url": f"https://www.roblox.com/users/{data['id']}/profile"
     }
 
 def robloxFriendsCopyPaste(input):
@@ -96,12 +97,37 @@ def findInstagram(username):
         return {"Instagram": True, "displayName": None, "profile_url": url} 
     else:
         return {"Instagram": False}
+    
+def findTwitter(username):
+    url = f"https://x.com/{username}"
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, "html.parser").prettify()
+
+    if len(soup) == 2656:
+        return {"Twitter (X)": False}
+    
+    return {"Twitter (X)": True, "username": username.lower(), "displayName": None, "profile_url": url}
+
+#github has some information...
+def findGithub(username):
+    url = f"https://api.github.com/users/{username}"
+    
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        user_data = response.json()
+        return {"Github": True, "username": user_data["login"], "displayName": user_data["name"], "profile_url": url}
+    else:
+        return {"Github": False}
+
+    
 
 userinput = input("enter Name: ")
 print(findRoblox(userinput))
 print(findFacebook(userinput))
 print(findTikToc(userinput))
 print(findInstagram(userinput))
+print(findGithub(userinput))
 
 '''
 with open("exampleRoblox.txt") as file:
