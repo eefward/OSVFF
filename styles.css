@@ -9,6 +9,7 @@
 
 body{
     background-image: url('https://static8.depositphotos.com/1029019/1052/i/450/depositphotos_10525934-stock-photo-magnifying-lens-on-the-laptop.jpg');
+    background-repeat: no-repeat;
     position: relative;
 }
 
@@ -16,13 +17,14 @@ body{
     text-align: center;
     color: aliceblue;
     font-size: 50px;
-    -webkit-text-stroke: 2px rgb(0, 188, 221);
+    -webkit-text-stroke: 2px rgb(0, 41, 118);
 }
 
 #Instagram{
     text-align: center;
     color: black;
     font-size: 25px;
+    
 }
 
 #submit{
