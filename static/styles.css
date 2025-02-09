@@ -1,39 +1,203 @@
-#first {
-    font-size: 8rem;
-}
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-#second {
-    font-size: 2rem;
-}
-
-.header {
-    font-family: serif;
-    color: azure;
-    -webkit-text-stroke: 2px rgb(0, 41, 118);
-    user-select: none;
-}
-
-body{
+/* General Styles */
+body {
     background-image: url('https://static8.depositphotos.com/1029019/1052/i/450/depositphotos_10525934-stock-photo-magnifying-lens-on-the-laptop.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    position: relative;
+    background-position: center;
+    font-family: 'Poppins', sans-serif;
 }
 
-.container:hover {
-    border: 2px solid black;
+/* Container Styles */
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
 }
 
+/* Header Styles */
+#first {
+    font-size: 5.5rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, #2C3E50, #3498DB);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#second {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2C3E50;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.header {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    user-select: none;
+}
+
+/* Divider Styles */
 hr {
-    height: 5px;
-    background-color: black;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #3498DB, transparent);
+    border: none;
+    margin: 25px 0;
 }
 
+/* Content Sections */
 .left, .right {
     width: 48%;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.left:hover, .right:hover {
+    transform: translateY(-2px);
+}
+
+.left {
+    text-align: left;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.right {
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 30px;
+}
+
+/* Form Styles */
+#searchForm {
+    margin-top: 20px;
+}
+
+#searchForm input {
+    border-radius: 10px;
+    padding: 12px 20px;
+    border: 2px solid #e1e1e1;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+#searchForm input:focus {
+    border-color: #3498DB;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+}
+
+#searchForm .btn {
+    background: linear-gradient(45deg, #3498DB, #2980B9);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#searchForm .btn:hover {
+    background: linear-gradient(45deg, #2980B9, #2C3E50);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* Results Styling */
+.platform-result {
+    background: #f8f9fa;
     padding: 20px;
-    background-color: lightgray;
-    text-align: center;
-    border: 2px solid black;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+    border: 1px solid #eef2f7;
+    width: 100%;
+}
+
+.platform-result:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.platform-result h5 {
+    color: #2C3E50;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.platform-result p {
+    margin-bottom: 8px;
+    color: #495057;
+}
+
+.platform-result a {
+    color: #3498DB;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.platform-result a:hover {
+    color: #2C3E50;
+    text-decoration: underline;
+}
+
+/* Loading Animation */
+.loading {
+    color: #3498DB;
+    font-weight: 600;
+    font-size: 1.2rem;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Success/Error Messages */
+.text-danger {
+    color: #e74c3c !important;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    
+    #first {
+        font-size: 3rem;
+    }
+    
+    #second {
+        font-size: 1.4rem;
+    }
+    
+    .d-flex {
+        flex-direction: column;
+    }
+    
+    .left, .right {
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }
