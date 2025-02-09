@@ -36,7 +36,7 @@
                         AI features that check other usernames similar to the one inputted and show the probability that it's actually them.
                     </p>
                     
-                    <form class="d-flex align-items-center gap-2" action="/" method="post">
+                    <form id="searchForm" class="d-flex align-items-center gap-2">
                         <input name="username" placeholder="Username" class="form-control">
                         <button type="submit" class="btn btn-primary">Search</button>
                     </form>
@@ -50,7 +50,68 @@
     </body>
 
     <script>
-        
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get the username input value
+            const username = this.querySelector('input[name="username"]').value;
+            
+            // Show loading state
+            document.querySelector('.right').innerHTML = 'Loading...';
+            
+            try {
+                // Send POST request to /data endpoint
+                const response = await fetch('/data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `username=${encodeURIComponent(username)}`
+                });
+                
+                // Parse the JSON response
+                const result = await response.json();
+                
+                // Update the right div with the formatted data
+                const rightDiv = document.querySelector('.right');
+                
+                if (result.data) {
+                    // Create HTML content from the data
+                    let html = '<div class="results">';
+                    html += `<h3>Results for ${result.data[0]}</h3>`;
+                    
+                    // Loop through the data array starting from index 1
+                    for (let i = 1; i < 7; i++) {
+                        const platformData = result.data[i];
+                        const platformName = Object.keys(platformData)[0];
+                        
+                        html += `
+                            <div class="platform-result mb-3">
+                                <h5>${platformName}</h5>
+                                ${platformData[platformName] ? 
+                                    `<p>Found: ✅</p>
+                                     <p>Display Name: ${platformData.displayName || 'N/A'}</p>
+                                     <p>Profile: <a href="${platformData.profile_url}" target="_blank">View Profile</a></p>`
+                                    : 
+                                    '<p>Found: ❌</p>'
+                                }
+                            </div>
+                        `;
+                    }
+                    
+                    html += '</div>';
+                    rightDiv.innerHTML = html;
+                } else {
+                    rightDiv.innerHTML = 'No results found';
+                }
+                
+            } catch (error) {
+                // Handle any errors
+                document.querySelector('.right').innerHTML = 'Error: Could not fetch data';
+                console.error('Error:', error);
+            }
+        });
     </script>
+    
 
 </html>
