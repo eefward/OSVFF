@@ -6,3 +6,12 @@
     color: azure;
 
 }
+
+body{
+    object-fit: contain;
+    
+    background-image: url('https://static8.depositphotos.com/1029019/1052/i/450/depositphotos_10525934-stock-photo-magnifying-lens-on-the-laptop.jpg');
+
+}
+
+
