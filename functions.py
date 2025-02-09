@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import re
 
 #just for testing, makes strings into json files because terminal is too small
 def jsonDump(soup, fileName = "testdata"):
@@ -20,6 +21,16 @@ def findBetween(txt, start, end):
     
     return None
 
+def findEverything(username):
+    return [
+        username, 
+        findRoblox(username),
+        findFacebook(username),
+        findInstagram(username),
+        findTikToc(username)
+    ]
+    
+
 def findRoblox(username):
     payload = {"usernames": [username], "excludeBannedUsers": False }
     headers = {"Content-Type": "application/json"}
@@ -36,10 +47,22 @@ def findRoblox(username):
 
     return {
         "Roblox": True, 
-        "username": data["name"], 
         "displayName": data["displayName"],
         "profile_url": f"https://www.roblox.com/users/{data["id"]}/profile"
     }
+
+def robloxFriendsCopyPaste(input):
+    data = []
+
+    matches = re.findall(r"@[a-zA-Z0-9]{3,20}\n", input)
+    for match in matches:
+        username = match[1:].strip() # Removes @ from the start and \n from the end
+        print(username)
+        data.append(findEverything(username))
+    
+    for specific_user in data:
+        print(specific_user)
+
     
 def findFacebook(username):
     url = f"https://www.facebook.com/{username}"
@@ -48,7 +71,7 @@ def findFacebook(username):
     actualUser = findBetween(soup, '{\"title\":\"', '\",\"accessory\":null,\"favicon\":null}')
 
     if actualUser:
-        return {"Facebook": True, "username": username, "displayName": actualUser, "profile_url": url}
+        return {"Facebook": True, "displayName": actualUser, "profile_url": url}
     else:
         return {"Facebook": False}
 
@@ -59,7 +82,7 @@ def findTikToc(username):
 
     if soup.find(f'"uniqueId":"{username.lower()}"') != -1:
         displayName = findBetween(soup, '"nickname":"', '","avatarLarger"')
-        return {"TikTok": True, "username": username.lower(), "displayName": displayName, "profile_url": url}
+        return {"TikTok": True, "displayName": displayName, "profile_url": url}
     else:
         return {"TikTok": False}
 
@@ -70,7 +93,7 @@ def findInstagram(username):
     actualUser = findBetween(soup, '(@', '\u2022 Instagram photos and videos\" proper')
 
     if actualUser:
-        return {"Instagram": True, "username": username.lower(), "displayName": None, "profile_url": url} 
+        return {"Instagram": True, "displayName": None, "profile_url": url} 
     else:
         return {"Instagram": False}
     
@@ -104,3 +127,10 @@ print(findFacebook(userinput))
 print(findTikToc(userinput))
 print(findInstagram(userinput))
 print(findGithub(userinput))
+
+'''
+with open("exampleRoblox.txt") as file:
+    contents = file.read()
+    
+    robloxFriendsCopyPaste(contents)
+'''
