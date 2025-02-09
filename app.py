@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, jsonify
 from flask_session import Session
 import html
 
@@ -18,6 +18,8 @@ def home():
     # Prevent malicious input
     username = html.escape(request.form.get("username"))
     data = findEverything(username)
+
+    return jsonify({"data": data})
     
 
 
