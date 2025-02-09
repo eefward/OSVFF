@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import re
+import getfromDiscord
 
 #just for testing, makes strings into json files because terminal is too small
 def jsonDump(soup, fileName = "testdata"):
