@@ -17,101 +17,81 @@
             <hr>
             <h5 class="text-center header" id="second">OSVFF (Open Source Vulnerabilities From Friends)</h5>
             <hr>
-
+        
             <div class="d-flex justify-content-between">
                 <div class="left">
-                    <p>*<i>We <b>highly</b> condemn using this to find information to do anything malicious.</i>*</p>
-                    <p>
-                        With how data is all over the internet, it is key to keep yourself safe. 
-                        One way to gather information about someone is checking those who might be close to them.
-                        Our website allows you to check if you're vulnerable to information leaks due to your friends.
-                    </p>
-                    <p>
-                        Currently, we support finding <i>usernames</i> through <b>TikTok, Facebook, Roblox, GitHub, Youtube</b>
-                        and finding that user's friends through Roblox.
-                    </p>
-                    <p>
-                        Upcoming features: Converting fully API usage rather than web scraping,
-                        more apps, not just Roblox, to find check Vulnerabilities from friends,
-                        AI features that check other usernames similar to the one inputted and show the probability that it's actually them.
-                    </p>
+                    <p><i>We <b>highly</b> condemn using this to find information to do anything malicious.</i></p>
+                    <p>With how data is all over the internet, it is key to keep yourself safe. 
+                    One way to gather information about someone is checking those who might be close to them.</p>
+                    <p>Currently, we support finding <i>usernames</i> through <b>TikTok, Facebook, Roblox, GitHub, YouTube</b></p>
                     
                     <form id="searchForm" class="d-flex align-items-center gap-2">
-                        <input name="username" placeholder="Username" class="form-control">
+                        <input name="username" placeholder="Enter Username" class="form-control">
                         <button type="submit" class="btn btn-primary">Search</button>
                     </form>
-                    
                 </div>
+        
                 <div class="right">
-                    
+                    <p>Enter a username to see results here.</p>
                 </div>
             </div>
         </div>
+        
     </body>
 
     <script>
         document.getElementById('searchForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get the username input value
+            // Get username input
             const username = this.querySelector('input[name="username"]').value;
             
             // Show loading state
-            document.querySelector('.right').innerHTML = 'Loading...';
+            const rightDiv = document.querySelector('.right');
+            rightDiv.innerHTML = '<p class="loading">Fetching data...</p>';
             
             try {
-                // Send POST request to /data endpoint
+                // Send POST request to /data
                 const response = await fetch('/data', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `username=${encodeURIComponent(username)}`
                 });
-                
+    
                 // Parse the JSON response
                 const result = await response.json();
                 
-                // Update the right div with the formatted data
-                const rightDiv = document.querySelector('.right');
-                
+                // Format the response and display it
                 if (result.data) {
-                    // Create HTML content from the data
-                    let html = '<div class="results">';
-                    html += `<h3>Results for ${result.data[0]}</h3>`;
-                    
-                    // Loop through the data array starting from index 1
+                    let html = `<h3>Results for ${result.data[0]}</h3>`;
                     for (let i = 1; i < 7; i++) {
                         const platformData = result.data[i];
                         const platformName = Object.keys(platformData)[0];
-                        
+    
                         html += `
-                            <div class="platform-result mb-3">
+                            <div class="platform-result">
                                 <h5>${platformName}</h5>
                                 ${platformData[platformName] ? 
-                                    `<p>Found: ✅</p>
-                                     <p>Display Name: ${platformData.displayName || 'N/A'}</p>
-                                     <p>Profile: <a href="${platformData.profile_url}" target="_blank">View Profile</a></p>`
-                                    : 
-                                    '<p>Found: ❌</p>'
+                                    `<p>✅ Found</p>
+                                    <p><strong>Display Name:</strong> ${platformData.displayName || 'N/A'}</p>
+                                    <p><strong>Profile:</strong> <a href="${platformData.profile_url}" target="_blank">View Profile</a></p>`
+                                    : '<p>❌ Not Found</p>'
                                 }
                             </div>
                         `;
                     }
-                    
-                    html += '</div>';
                     rightDiv.innerHTML = html;
                 } else {
-                    rightDiv.innerHTML = 'No results found';
+                    rightDiv.innerHTML = '<p class="text-danger">No results found.</p>';
                 }
-                
+    
             } catch (error) {
-                // Handle any errors
-                document.querySelector('.right').innerHTML = 'Error: Could not fetch data';
+                rightDiv.innerHTML = '<p class="text-danger">Error: Could not fetch data.</p>';
                 console.error('Error:', error);
             }
         });
     </script>
+    
     
 
 </html>
