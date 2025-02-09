@@ -27,7 +27,8 @@ def findEverything(username):
         findRoblox(username),
         findFacebook(username),
         findInstagram(username),
-        findTikToc(username)
+        findTikToc(username),
+        findGithub(username)
     ]
     
 
@@ -48,7 +49,7 @@ def findRoblox(username):
     return {
         "Roblox": True, 
         "displayName": data["displayName"],
-        "profile_url": f"https://www.roblox.com/users/{data["id"]}/profile"
+        "profile_url": f"https://www.roblox.com/users/{data['id']}/profile"
     }
 
 def robloxFriendsCopyPaste(input):
