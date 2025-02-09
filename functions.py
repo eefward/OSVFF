@@ -47,7 +47,6 @@ def findRoblox(username):
 
     return {
         "Roblox": True, 
-        "username": data["name"], 
         "displayName": data["displayName"],
         "profile_url": f"https://www.roblox.com/users/{data["id"]}/profile"
     }
@@ -57,7 +56,8 @@ def robloxFriendsCopyPaste(input):
 
     matches = re.findall(r"@[a-zA-Z0-9]{3,20}\n", input)
     for match in matches:
-        username = match[1:-2] # Removes @ from the start and \n from the end
+        username = match[1:].strip() # Removes @ from the start and \n from the end
+        print(username)
         data.append(findEverything(username))
     
     for specific_user in data:
@@ -71,7 +71,7 @@ def findFacebook(username):
     actualUser = findBetween(soup, '{\"title\":\"', '\",\"accessory\":null,\"favicon\":null}')
 
     if actualUser:
-        return {"Facebook": True, "username": username, "displayName": actualUser, "profile_url": url}
+        return {"Facebook": True, "displayName": actualUser, "profile_url": url}
     else:
         return {"Facebook": False}
 
@@ -82,7 +82,7 @@ def findTikToc(username):
 
     if soup.find(f'"uniqueId":"{username.lower()}"') != -1:
         displayName = findBetween(soup, '"nickname":"', '","avatarLarger"')
-        return {"TikTok": True, "username": username.lower(), "displayName": displayName, "profile_url": url}
+        return {"TikTok": True, "displayName": displayName, "profile_url": url}
     else:
         return {"TikTok": False}
 
@@ -93,7 +93,7 @@ def findInstagram(username):
     actualUser = findBetween(soup, '(@', '\u2022 Instagram photos and videos\" proper')
 
     if actualUser:
-        return {"Instagram": True, "username": username.lower(), "displayName": None, "profile_url": url} 
+        return {"Instagram": True, "displayName": None, "profile_url": url} 
     else:
         return {"Instagram": False}
 
@@ -103,7 +103,9 @@ print(findFacebook(userinput))
 print(findTikToc(userinput))
 print(findInstagram(userinput))
 
+'''
 with open("exampleRoblox.txt") as file:
     contents = file.read()
     
     robloxFriendsCopyPaste(contents)
+'''
