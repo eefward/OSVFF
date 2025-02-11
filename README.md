@@ -12,3 +12,9 @@ Run in the terminal
 ```py
 python app.py
 ```
+
+# Authors
+
+BlooperBerry (Frontend)
+eefward (Backend)
+GuestyTheBesty (Front/Backend)
