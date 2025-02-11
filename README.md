@@ -15,6 +15,8 @@ python app.py
 
 # Authors
 
-BlooperBerry (Frontend)
-eefward (Backend)
-GuestyTheBesty (Front/Backend)
+BlooperBerry (Front-end)
+
+eefward (Back-end)
+
+GuestyTheBesty (Front/Back-end)
